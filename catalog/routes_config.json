@@ -1,0 +1,31 @@
+{
+  "origins": [
+    { "iata": "VVI", "name": "Santa Cruz de la Sierra", "country": "Bolivia" },
+    { "iata": "LPB", "name": "La Paz", "country": "Bolivia" },
+    { "iata": "CBB", "name": "Cochabamba", "country": "Bolivia" },
+    { "iata": "SRE", "name": "Sucre", "country": "Bolivia" },
+    { "iata": "TJA", "name": "Tarija", "country": "Bolivia" }
+  ],
+  "known_destinations": [
+    { "iata": "MIA", "name": "Miami", "country": "USA" },
+    { "iata": "MCO", "name": "Orlando", "country": "USA" },
+    { "iata": "JFK", "name": "New York", "country": "USA" },
+    { "iata": "IAD", "name": "Washington DC", "country": "USA" },
+    { "iata": "EWR", "name": "New York (Newark)", "country": "USA" },
+    { "iata": "SCL", "name": "Santiago de Chile", "country": "Chile" },
+    { "iata": "LIM", "name": "Lima", "country": "Peru" },
+    { "iata": "ASU", "name": "Asuncion", "country": "Paraguay" },
+    { "iata": "GRU", "name": "Sao Paulo", "country": "Brazil" },
+    { "iata": "EZE", "name": "Buenos Aires", "country": "Argentina" },
+    { "iata": "BOG", "name": "Bogota", "country": "Colombia" },
+    { "iata": "PTY", "name": "Panama City", "country": "Panama" },
+    { "iata": "MAD", "name": "Madrid", "country": "Spain" },
+    { "iata": "PUJ", "name": "Punta Cana", "country": "Dominican Republic" },
+    { "iata": "CUN", "name": "Cancun", "country": "Mexico" },
+    { "iata": "CTG", "name": "Cartagena", "country": "Colombia" },
+    { "iata": "MVD", "name": "Montevideo", "country": "Uruguay" },
+    { "iata": "GYE", "name": "Guayaquil", "country": "Ecuador" },
+    { "iata": "UIO", "name": "Quito", "country": "Ecuador" },
+    { "iata": "HAV", "name": "Havana", "country": "Cuba" }
+  ]
+}
