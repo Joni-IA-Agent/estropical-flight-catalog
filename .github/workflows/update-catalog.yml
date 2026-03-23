@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add output/flights-catalog.xml
+          git add docs/flights-catalog.xml
           # Exit 0 if nothing changed (no new routes or prices)
           git diff --cached --quiet && echo "No changes to commit." && exit 0
           git commit -m "chore: update flight catalog [$(date -u +%Y-%m-%d)]"

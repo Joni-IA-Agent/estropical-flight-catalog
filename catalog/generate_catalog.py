@@ -15,7 +15,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent
 ROUTES_PATH = BASE_DIR / "routes_data.json"
-OUTPUT_DIR = BASE_DIR.parent / "output"
+OUTPUT_DIR = BASE_DIR.parent / "docs"
 OUTPUT_PATH = OUTPUT_DIR / "flights-catalog.xml"
 
 FEED_TITLE = "estropical.com - Vuelos"
