@@ -66,6 +66,9 @@ def generate_xml(routes):
         "%Y-%m-%dT%H:%M:%SZ"
     )
 
+    if routes:
+        print(f"  DEBUG first route: {routes[0]}")
+
     for route in routes:
         origin_iata = route.get("origin_iata", "")
         destination_iata = route.get("destination_iata", "")
