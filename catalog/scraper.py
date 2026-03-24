@@ -14,6 +14,8 @@ import time
 import asyncio
 import unicodedata
 from pathlib import Path
+import requests
+from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
 
 BASE_DIR = Path(__file__).parent
@@ -57,51 +59,60 @@ def build_city_iata_map(config):
     return mapping
 
 
-async def scrape_homepage_carousel(page, config):
-    """Phase A: extract featured routes from the homepage carousel.
+def scrape_homepage_carousel(config):
+    """Phase A: extract featured routes from the homepage carousel via plain HTTP.
 
-    The site renders each card as:
+    estropical.com uses JSF (server-side rendering), so the carousel HTML is
+    present in the initial page source — no JavaScript execution needed.
+    This avoids headless-browser detection issues in CI environments.
+
+    Each card structure:
       <div class="swiper-slide">
         <a href="/es/idea/ID/slug">
-          <img ...>
+          <img src="...">
           <h3>Miami</h3>
-          <p>... Transportes</p>
+          <p>N Destinos N Transportes</p>
           <p>... US$737 ...</p>
         </a>
       </div>
-
-    No IATA codes appear in the HTML — destination is identified by the <h3>
-    city name, and origin is always Santa Cruz (VVI).
     """
-    print("[Phase A] Scraping homepage carousel...")
+    print("[Phase A] Scraping homepage carousel via HTTP...")
     routes = {}
 
     city_iata = build_city_iata_map(config)
     origin_iata = config["origins"][0]["iata"]
     origin_city = config["origins"][0]["name"]
+    origin_set = {o["iata"] for o in config["origins"]}
 
-    await page.goto(SITE_URL, wait_until="networkidle", timeout=60000)
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/124.0.0.0 Safari/537.36"
+        ),
+        "Accept-Language": "es-BO,es;q=0.9,en;q=0.8",
+    }
 
     try:
-        await page.wait_for_selector(".swiper-slide", timeout=15000)
-    except PlaywrightTimeout:
-        print("  Warning: Swiper slides not found on homepage.")
+        resp = requests.get(SITE_URL, headers=headers, timeout=30)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"  HTTP fetch failed: {e}")
         return routes
 
-    slides = await page.query_selector_all(".swiper-slide")
-    print(f"  Found {len(slides)} carousel slides.")
+    soup = BeautifulSoup(resp.text, "html.parser")
+    slides = soup.select(".swiper-slide")
+    print(f"  Found {len(slides)} carousel slides in page source.")
 
     for slide in slides:
         try:
-            # Destination city is in the <h3> inside the card
-            h3 = await slide.query_selector("h3")
+            h3 = slide.find("h3")
             if not h3:
                 continue
-            dest_city_raw = (await h3.inner_text()).strip()
+            dest_city_raw = h3.get_text(strip=True)
             if not dest_city_raw:
                 continue
 
-            # Look up destination IATA by normalized city name
             dest_key = normalize_city(dest_city_raw)
             destination_iata = None
             for city_key, (iata, _) in city_iata.items():
@@ -113,27 +124,23 @@ async def scrape_homepage_carousel(page, config):
                 print(f"  No IATA mapping for city: {dest_city_raw!r} — skipping")
                 continue
 
-            # Skip if this resolves to an origin airport
-            if destination_iata in {o["iata"] for o in config["origins"]}:
+            if destination_iata in origin_set:
                 continue
 
-            # Extract price — site format: "US$737" or "US$1,033"
-            text = await slide.inner_text()
+            text = slide.get_text()
             price_match = re.search(r"US\$\s*([\d,]+)|\$\s*([\d,]+)", text)
             if not price_match:
                 continue
             price_str = (price_match.group(1) or price_match.group(2)).replace(",", "")
             price = float(price_str)
 
-            # Destination image
-            img = await slide.query_selector("img")
-            image_url = await img.get_attribute("src") if img else ""
+            img_tag = slide.find("img")
+            image_url = img_tag.get("src", "") if img_tag else ""
             if image_url and image_url.startswith("/"):
                 image_url = SITE_URL + image_url
 
-            # Card link (package detail page — best we can do without a search URL)
-            link = await slide.query_selector("a")
-            search_url = await link.get_attribute("href") if link else SITE_URL
+            a_tag = slide.find("a")
+            search_url = a_tag.get("href", SITE_URL) if a_tag else SITE_URL
             if search_url and search_url.startswith("/"):
                 search_url = SITE_URL + search_url
 
@@ -371,8 +378,8 @@ async def main():
         )
         page = await context.new_page()
 
-        # Phase A: homepage carousel
-        carousel_routes = await scrape_homepage_carousel(page, config)
+        # Phase A: homepage carousel (plain HTTP — no headless browser needed)
+        carousel_routes = scrape_homepage_carousel(config)
         all_routes.update(carousel_routes)
         print(f"\nPhase A complete: {len(all_routes)} routes found.\n")
 
