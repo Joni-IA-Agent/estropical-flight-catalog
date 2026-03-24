@@ -12,6 +12,7 @@ import json
 import re
 import time
 import asyncio
+import unicodedata
 from pathlib import Path
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
 
@@ -41,14 +42,46 @@ def parse_price(price_text):
     return None
 
 
+def normalize_city(name):
+    """Lowercase + strip accents for fuzzy city matching."""
+    return unicodedata.normalize("NFKD", name.lower()).encode("ascii", "ignore").decode()
+
+
+def build_city_iata_map(config):
+    """Return {normalized_city_name: (iata, display_name)} for all known airports."""
+    mapping = {}
+    for dest in config["known_destinations"]:
+        mapping[normalize_city(dest["name"])] = (dest["iata"], dest["name"])
+    for orig in config["origins"]:
+        mapping[normalize_city(orig["name"])] = (orig["iata"], orig["name"])
+    return mapping
+
+
 async def scrape_homepage_carousel(page, config):
-    """Phase A: extract featured routes from the homepage carousel."""
+    """Phase A: extract featured routes from the homepage carousel.
+
+    The site renders each card as:
+      <div class="swiper-slide">
+        <a href="/es/idea/ID/slug">
+          <img ...>
+          <h3>Miami</h3>
+          <p>... Transportes</p>
+          <p>... US$737 ...</p>
+        </a>
+      </div>
+
+    No IATA codes appear in the HTML — destination is identified by the <h3>
+    city name, and origin is always Santa Cruz (VVI).
+    """
     print("[Phase A] Scraping homepage carousel...")
     routes = {}
 
+    city_iata = build_city_iata_map(config)
+    origin_iata = config["origins"][0]["iata"]
+    origin_city = config["origins"][0]["name"]
+
     await page.goto(SITE_URL, wait_until="networkidle", timeout=60000)
 
-    # Wait for Swiper carousel items to appear
     try:
         await page.wait_for_selector(".swiper-slide", timeout=15000)
     except PlaywrightTimeout:
@@ -60,42 +93,49 @@ async def scrape_homepage_carousel(page, config):
 
     for slide in slides:
         try:
-            # Try to extract IATA codes and price from each slide
-            text = await slide.inner_text()
-
-            # Look for IATA codes in parentheses, e.g. "(MIA)" or "(VVI)"
-            iata_matches = re.findall(r"\(([A-Z]{3})\)", text)
-            price_match = re.search(r"\$\s*([\d,]+)", text)
-
-            # Carousel cards often only show the destination IATA (origin is implicit)
-            if len(iata_matches) >= 2 and price_match:
-                origin_iata = iata_matches[0]
-                destination_iata = iata_matches[1]
-                price = float(price_match.group(1).replace(",", ""))
-            elif len(iata_matches) == 1 and price_match:
-                # Only destination shown — assume primary origin VVI
-                origin_iata = config["origins"][0]["iata"]
-                destination_iata = iata_matches[0]
-                price = float(price_match.group(1).replace(",", ""))
-            else:
+            # Destination city is in the <h3> inside the card
+            h3 = await slide.query_selector("h3")
+            if not h3:
+                continue
+            dest_city_raw = (await h3.inner_text()).strip()
+            if not dest_city_raw:
                 continue
 
-            # Try to get destination image
+            # Look up destination IATA by normalized city name
+            dest_key = normalize_city(dest_city_raw)
+            destination_iata = None
+            for city_key, (iata, _) in city_iata.items():
+                if city_key in dest_key or dest_key in city_key:
+                    destination_iata = iata
+                    break
+
+            if not destination_iata:
+                print(f"  No IATA mapping for city: {dest_city_raw!r} — skipping")
+                continue
+
+            # Skip if this resolves to an origin airport
+            if destination_iata in {o["iata"] for o in config["origins"]}:
+                continue
+
+            # Extract price — site format: "US$737" or "US$1,033"
+            text = await slide.inner_text()
+            price_match = re.search(r"US\$\s*([\d,]+)|\$\s*([\d,]+)", text)
+            if not price_match:
+                continue
+            price_str = (price_match.group(1) or price_match.group(2)).replace(",", "")
+            price = float(price_str)
+
+            # Destination image
             img = await slide.query_selector("img")
             image_url = await img.get_attribute("src") if img else ""
             if image_url and image_url.startswith("/"):
                 image_url = SITE_URL + image_url
 
-            # Try to get a link
+            # Card link (package detail page — best we can do without a search URL)
             link = await slide.query_selector("a")
             search_url = await link.get_attribute("href") if link else SITE_URL
             if search_url and search_url.startswith("/"):
                 search_url = SITE_URL + search_url
-
-            # Extract city names from text (lines before/after IATA)
-            lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-            origin_city = lines[0] if lines else origin_iata
-            destination_city = lines[1] if len(lines) > 1 else destination_iata
 
             key = build_route_key(origin_iata, destination_iata)
             if key not in routes or routes[key]["price"] > price:
@@ -103,7 +143,7 @@ async def scrape_homepage_carousel(page, config):
                     "origin_iata": origin_iata,
                     "destination_iata": destination_iata,
                     "origin_city": origin_city,
-                    "destination_city": destination_city,
+                    "destination_city": dest_city_raw,
                     "price": price,
                     "currency": "USD",
                     "image_url": image_url,

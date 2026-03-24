@@ -26,6 +26,7 @@
     { "iata": "MVD", "name": "Montevideo", "country": "Uruguay" },
     { "iata": "GYE", "name": "Guayaquil", "country": "Ecuador" },
     { "iata": "UIO", "name": "Quito", "country": "Ecuador" },
-    { "iata": "HAV", "name": "Havana", "country": "Cuba" }
+    { "iata": "HAV", "name": "Havana", "country": "Cuba" },
+    { "iata": "MEX", "name": "Mexico City", "country": "Mexico" }
   ]
 }
