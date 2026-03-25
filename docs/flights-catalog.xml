@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:g="http://base.google.com/ns/1.0">
   <title>estropical.com - Vuelos</title>
   <link href="https://estropical.com" />
-  <updated>2026-03-24T22:44:38Z</updated>
+  <updated>2026-03-25T00:42:19Z</updated>
   <entry>
     <g:id>VVI-ASU</g:id>
     <title>Santa Cruz de la Sierra → Boleto a Asunción desde Santa Cruz</title>
@@ -60,6 +60,34 @@
     <g:availability>in stock</g:availability>
   </entry>
   <entry>
+    <g:id>VVI-CUN</g:id>
+    <title>Santa Cruz de la Sierra → Boleto a Cancún desde Santa Cruz</title>
+    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Cancún desde Santa Cruz (CUN). Mejor precio desde 613.00 USD.</g:description>
+    <g:link>https://www.estropical.com/es/idea/48690832/boleto-a-cancun-desde-santa-cruz</g:link>
+    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
+    <g:price>613.00 USD</g:price>
+    <g:currency>USD</g:currency>
+    <g:origin_airport>VVI</g:origin_airport>
+    <g:destination_airport>CUN</g:destination_airport>
+    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
+    <g:destination_city>Boleto a Cancún desde Santa Cruz</g:destination_city>
+    <g:availability>in stock</g:availability>
+  </entry>
+  <entry>
+    <g:id>VVI-MAD</g:id>
+    <title>Santa Cruz de la Sierra → Boleto a Madrid desde Santa Cruz</title>
+    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Madrid desde Santa Cruz (MAD). Mejor precio desde 1356.00 USD.</g:description>
+    <g:link>https://www.estropical.com/es/idea/41046035/boleto-a-madrid-desde-santa-cruz</g:link>
+    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
+    <g:price>1356.00 USD</g:price>
+    <g:currency>USD</g:currency>
+    <g:origin_airport>VVI</g:origin_airport>
+    <g:destination_airport>MAD</g:destination_airport>
+    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
+    <g:destination_city>Boleto a Madrid desde Santa Cruz</g:destination_city>
+    <g:availability>in stock</g:availability>
+  </entry>
+  <entry>
     <g:id>VVI-PUJ</g:id>
     <title>Santa Cruz de la Sierra → Boleto a Punta Cana desde Santa Cruz</title>
     <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Punta Cana desde Santa Cruz (PUJ). Mejor precio desde 747.00 USD.</g:description>
@@ -74,48 +102,6 @@
     <g:availability>in stock</g:availability>
   </entry>
   <entry>
-    <g:id>VVI-CUN</g:id>
-    <title>Santa Cruz de la Sierra → ¡Escapada a Cancún en Familia! | Oasis Hotels &amp; Resorts</title>
-    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a ¡Escapada a Cancún en Familia! | Oasis Hotels &amp; Resorts (CUN). Mejor precio desde 569.00 USD.</g:description>
-    <g:link>https://www.estropical.com/es/idea/41044895/-escapada-a-cancun-en-familia-oasis-hotels-resorts</g:link>
-    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
-    <g:price>569.00 USD</g:price>
-    <g:currency>USD</g:currency>
-    <g:origin_airport>VVI</g:origin_airport>
-    <g:destination_airport>CUN</g:destination_airport>
-    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
-    <g:destination_city>¡Escapada a Cancún en Familia! | Oasis Hotels &amp; Resorts</g:destination_city>
-    <g:availability>in stock</g:availability>
-  </entry>
-  <entry>
-    <g:id>VVI-EZE</g:id>
-    <title>Santa Cruz de la Sierra → ¡Tus Vacaciones 2026 a Buenos Aires!</title>
-    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a ¡Tus Vacaciones 2026 a Buenos Aires! (EZE). Mejor precio desde 650.00 USD.</g:description>
-    <g:link>https://www.estropical.com/es/idea/41044574/-tus-vacaciones-2026-a-buenos-aires-</g:link>
-    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
-    <g:price>650.00 USD</g:price>
-    <g:currency>USD</g:currency>
-    <g:origin_airport>VVI</g:origin_airport>
-    <g:destination_airport>EZE</g:destination_airport>
-    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
-    <g:destination_city>¡Tus Vacaciones 2026 a Buenos Aires!</g:destination_city>
-    <g:availability>in stock</g:availability>
-  </entry>
-  <entry>
-    <g:id>VVI-BOG</g:id>
-    <title>Santa Cruz de la Sierra → Boleto a Bogotá desde Santa Cruz</title>
-    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Bogotá desde Santa Cruz (BOG). Mejor precio desde 899.00 USD.</g:description>
-    <g:link>https://www.estropical.com/es/idea/44870184/boleto-a-bogota-desde-santa-cruz-</g:link>
-    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
-    <g:price>899.00 USD</g:price>
-    <g:currency>USD</g:currency>
-    <g:origin_airport>VVI</g:origin_airport>
-    <g:destination_airport>BOG</g:destination_airport>
-    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
-    <g:destination_city>Boleto a Bogotá desde Santa Cruz</g:destination_city>
-    <g:availability>in stock</g:availability>
-  </entry>
-  <entry>
     <g:id>VVI-GRU</g:id>
     <title>Santa Cruz de la Sierra → Boleto a Sao Paulo desde Santa Cruz</title>
     <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Sao Paulo desde Santa Cruz (GRU). Mejor precio desde 443.00 USD.</g:description>
@@ -127,6 +113,34 @@
     <g:destination_airport>GRU</g:destination_airport>
     <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
     <g:destination_city>Boleto a Sao Paulo desde Santa Cruz</g:destination_city>
+    <g:availability>in stock</g:availability>
+  </entry>
+  <entry>
+    <g:id>VVI-LIM</g:id>
+    <title>Santa Cruz de la Sierra → Boleto a Lima desde Santa Cruz</title>
+    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Lima desde Santa Cruz (LIM). Mejor precio desde 492.00 USD.</g:description>
+    <g:link>https://www.estropical.com/es/idea/44930976/boleto-a-lima-desde-santa-cruz-</g:link>
+    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
+    <g:price>492.00 USD</g:price>
+    <g:currency>USD</g:currency>
+    <g:origin_airport>VVI</g:origin_airport>
+    <g:destination_airport>LIM</g:destination_airport>
+    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
+    <g:destination_city>Boleto a Lima desde Santa Cruz</g:destination_city>
+    <g:availability>in stock</g:availability>
+  </entry>
+  <entry>
+    <g:id>VVI-SCL</g:id>
+    <title>Santa Cruz de la Sierra → Boleto a Santiago de Chile desde Santa Cruz</title>
+    <g:description>Vuelos desde Santa Cruz de la Sierra (VVI) a Boleto a Santiago de Chile desde Santa Cruz (SCL). Mejor precio desde 555.00 USD.</g:description>
+    <g:link>https://www.estropical.com/es/idea/41100449/boleto-a-santiago-de-chile-desde-santa-cruz</g:link>
+    <g:image_link>https://estropical.com/javax.faces.resource/images/no-photo-XS.jpg</g:image_link>
+    <g:price>555.00 USD</g:price>
+    <g:currency>USD</g:currency>
+    <g:origin_airport>VVI</g:origin_airport>
+    <g:destination_airport>SCL</g:destination_airport>
+    <g:origin_city>Santa Cruz de la Sierra</g:origin_city>
+    <g:destination_city>Boleto a Santiago de Chile desde Santa Cruz</g:destination_city>
     <g:availability>in stock</g:availability>
   </entry>
   <entry>
